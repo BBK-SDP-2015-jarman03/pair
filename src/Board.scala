@@ -43,12 +43,13 @@ class Board {
     }
   }
 
-  //Get this from Joel.
   def getPossibleMoves(p: Player): Array[Move] = {
-    var posMoves = Array[Move]()
-    for(col <- 0 to Board.NUM_COLS -1  if getTile(0, col) == null)
-      posMoves = posMoves :+ new Move(p, col)
-    posMoves
+    if (this.hasConnectFour() != null) {
+      Array[Move]()
+    } else {
+      0.until(Board.NUM_COLS).filter(c => this.getPlayer(0, c) == null).
+        map(new Move(p, _)).toArray
+    }
   }
 
   override def toString(): String = toString("")
