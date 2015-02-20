@@ -3,6 +3,7 @@ import java.io.PrintWriter
 import java.io.UnsupportedEncodingException
 import State._
 import scala.beans.BeanProperty
+import scala.collection.mutable.ListBuffer
 
 object State {
 
@@ -18,7 +19,29 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
   @BeanProperty
   var value: Int = 0
 
-  def initializeChildren() {
+  def initializeChildren(): Unit = {
+
+    val moves = board.getPossibleMoves(player)
+    val stateList = new ListBuffer[State]
+    for(move <- moves){
+      val childBoard = new Board(board)
+      childBoard.makeMove(move)
+      stateList.append(new State(player.opponent, childBoard, move))
+    }
+
+    children = stateList.toArray
+
+    //getpossiblemoves from this board and player
+    //for each move
+    //new board(board)
+    //board.makemove(move)
+    //children[] :+ new State()
+
+
+    //this.player
+    //this.board
+    //this.value
+    //this.lastmove
   }
 
   def writeToFile() {

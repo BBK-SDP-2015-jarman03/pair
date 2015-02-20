@@ -10,7 +10,7 @@ object GameGUI extends App {
   val p2= new Human(YELLOW);
   //val p1 = new Dummy(RED);
   //val p2 = new Dummy(YELLOW);
-  val p1 = new Human(RED);
+  val p1= new AI(RED, 3);
   //val p2 = new Dummy(YELLOW);
 
   /* --------------------------------- Do not change below here. --------------------------------- */

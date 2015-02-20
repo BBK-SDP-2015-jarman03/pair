@@ -1,11 +1,19 @@
 import java.util.List
 import AI._
+
+import scala.collection.mutable.ListBuffer
+
 //remove if not needed
 import scala.collection.JavaConversions._
 
 object AI {
 
-  def createGameTree(s: State, d: Int) {
+  def createGameTree(s: State, d: Int): Unit = {
+    if(d == 0) return
+    s.initializeChildren()
+    val children = s.getChildren
+    for(child <- children)
+      createGameTree(child, d-1)
   }
 
   def minimax(ai: AI, s: State) {
@@ -15,9 +23,37 @@ object AI {
 
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
-  override def getMoves(b: Board): Array[Move] = ???
+  override def getMoves(b: Board): Array[Move] = {
+    var moves = ListBuffer[Move]()
+    var state = new State(player, b, null)
+    createGameTree(state, depth)
+    minimax(state)
+    var children = state.getChildren
+    val n: Integer = 0
+    for(child <- children)
+      if(n<=child.getValue)
+        moves.append(child.getLastMove)
+    moves.toArray
+  }
 
-  def minimax(s: State) {
+  def minimax(s: State): Unit = {
+
+//    def helper(s1: State): Int = {
+//      if(s1.getChildren == 0){
+//        s1.setValue(evaluateBoard(s1.getBoard))
+//        s.getValue
+//      }else{
+//        val children = s1.getChildren
+//        val listOfValues = new ListBuffer[Integer]
+//        for(child <- children)
+//          listOfValues.append(helper(child))
+//        if(s1.player == this.player)
+//          listOfValues.max
+//        else
+//          listOfValues.min
+//      }
+//    }
+//    s.setValue(helper(s))
   }
 
   def evaluateBoard(b: Board): Int = {

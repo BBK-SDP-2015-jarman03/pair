@@ -35,13 +35,14 @@ class Board {
 
   def getTile(row: Int, col: Int): Player = board(row)(col)
 
-  //filled in : Michael Freeman
+
   def makeMove(move: Move): Unit = {
     for(x <- Board.NUM_ROWS to 1 by -1 if getTile(x -1, move.column) == null ){
       board(x -1)(move.column) = move.player
       return
     }
   }
+
 
   def getPossibleMoves(p: Player): Array[Move] = {
     if (this.hasConnectFour() != null) {
