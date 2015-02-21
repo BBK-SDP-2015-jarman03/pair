@@ -16,10 +16,10 @@ object Game extends App {
   var state = new State(RED, new Board(b), new Move(YELLOW, 4))
   AI.createGameTree(state, 3)
   AI.minimax(p1, state)
+  println(state)
   println("Completed")
   //var children = state.getChildren
   //println(children.length)
-  println(state)
 //  for(child <- children)
 //    println(child)
 

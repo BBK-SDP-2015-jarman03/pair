@@ -24,55 +24,48 @@ object AI {
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
   override def getMoves(b: Board): Array[Move] = {
-    var moves = ListBuffer[Move]()
+    var moves =  new ListBuffer[Move]()
     var state = new State(player, b, null)
     createGameTree(state, depth)
     minimax(state)
-    println(state.getValue)
     var children = state.getChildren
-    val n: Integer = 0
-    for(child <- children)
-      if(n<=child.getValue){
-        println("printing value" + child.getValue + " and printing move " + child.getLastMove)
+    var first = true
+    var value = 0;
+    for(child <- children){
+      if(first){
+        moves.append(child.getLastMove)
+        value = child.getValue
+        first = false
+      } else if (value < child.getValue) {
+        moves = new ListBuffer[Move]()
+        moves.append(child.getLastMove)
+        value = child.getValue
+      } else if (value == child.getValue){
         moves.append(child.getLastMove)
       }
+    }
     moves.toArray
   }
 
   def minimax(s: State): Unit = {
 
-    def helper2(recState: State): Int = {
-      val children = recState.getChildren
-      if(children.length == 0){
-        recState.setValue(evaluateBoard(recState.getBoard))
-        println(recState.getValue)
-        recState.getValue
-      }
-      else {
-
+    def helper(s1: State): Int = {
+      if(s1.getChildren.length == 0){
+        s1.setValue(evaluateBoard(s1.getBoard))
+        s1.getValue
+      }else{
+        val children = s1.getChildren
+        val listOfValues = new ListBuffer[Integer]
+        for(child <- children)
+          listOfValues.append(helper(child))
+        if(s1.player == this.player)
+          s1.setValue(listOfValues.max)
+        else
+          s1.setValue(listOfValues.min)
+        s1.getValue
       }
     }
-
-
-
-//    def helper(s1: State): Int = {
-//      if(s1.getChildren.length == 0){
-//        s1.setValue(evaluateBoard(s1.getBoard))
-//        s1.getValue
-//      }else{
-//        val children = s1.getChildren
-//        val listOfValues = new ListBuffer[Integer]
-//        for(child <- children)
-//          listOfValues.append(helper(child))
-//        if(s1.player == this.player){
-//          listOfValues.max
-//        }
-//        else {
-//          listOfValues.min
-//        }
-//      }
-//    }
-//    s.setValue(helper(s))
+    s.setValue(helper(s))
   }
 
   def evaluateBoard(b: Board): Int = {
