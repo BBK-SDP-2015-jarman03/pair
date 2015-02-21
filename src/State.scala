@@ -11,7 +11,7 @@ object State {
 }
 
 class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @BeanProperty var lastMove: Move)
-  extends Comparable[Any] {
+  extends Ordered[State] {
 
   @BeanProperty
   var children: Array[State] = length0
@@ -20,8 +20,7 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
   var value: Int = 0
 
   def initializeChildren(): Unit = {
-
-    val moves = board.getPossibleMoves(player)
+    val moves = board.getPossibleMoves(player.opponent)
     val stateList = new ListBuffer[State]
     for(move <- moves){
       val childBoard = new Board(board)
@@ -73,6 +72,5 @@ class State(@BeanProperty var player: Player, @BeanProperty var board: Board, @B
     str
   }
 
-  override def compareTo(ob: AnyRef): Int = 0
+  override def compare(that: State): Int = this.getValue.compare(that.getValue)
 }
-

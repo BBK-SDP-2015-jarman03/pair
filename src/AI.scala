@@ -24,48 +24,25 @@ object AI {
 class AI(private var player: Player, private var depth: Int) extends Solver {
 
   override def getMoves(b: Board): Array[Move] = {
-    var moves =  new ListBuffer[Move]()
-    var state = new State(player, b, null)
+    var state = new State(player.opponent, b, null)
     createGameTree(state, depth)
     minimax(state)
-    var children = state.getChildren
-    var first = true
-    var value = 0;
-    for(child <- children){
-      if(first){
-        moves.append(child.getLastMove)
-        value = child.getValue
-        first = false
-      } else if (value < child.getValue) {
-        moves = new ListBuffer[Move]()
-        moves.append(child.getLastMove)
-        value = child.getValue
-      } else if (value == child.getValue){
-        moves.append(child.getLastMove)
-      }
-    }
-    moves.toArray
+    Array[Move](state.getChildren.max.getLastMove)
   }
 
   def minimax(s: State): Unit = {
-
-    def helper(s1: State): Int = {
-      if(s1.getChildren.length == 0){
-        s1.setValue(evaluateBoard(s1.getBoard))
-        s1.getValue
-      }else{
-        val children = s1.getChildren
-        val listOfValues = new ListBuffer[Integer]
-        for(child <- children)
-          listOfValues.append(helper(child))
-        if(s1.player == this.player)
-          s1.setValue(listOfValues.max)
-        else
-          s1.setValue(listOfValues.min)
-        s1.getValue
+    if (s.getChildren.length == 0) {
+      s.setValue(evaluateBoard(s.getBoard))
+    } else {
+      for (child <- s.getChildren) {
+        minimax(child)
+        if (s.player == this.player) {
+          s.setValue(s.getChildren.min.getValue)
+        } else {
+          s.setValue(s.getChildren.max.getValue)
+        }
       }
     }
-    s.setValue(helper(s))
   }
 
   def evaluateBoard(b: Board): Int = {

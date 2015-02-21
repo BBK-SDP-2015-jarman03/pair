@@ -7,10 +7,10 @@ object GameGUI extends App {
          * as parameters, with the a depth used to recurse when searching the
          * game space. */
   //val p1= new AI(RED, 6);
-  val p2= new Human(YELLOW);
-  //val p1 = new Dummy(RED);
+  val p1 = new Human(YELLOW);
+  // val p1 = new Dummy(RED);
   //val p2 = new Dummy(YELLOW);
-  val p1= new AI(RED, 2);
+  val p2= new AI(RED, 6);
   //val p2 = new Dummy(YELLOW);
 
   /* --------------------------------- Do not change below here. --------------------------------- */
