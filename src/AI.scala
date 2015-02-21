@@ -28,29 +28,48 @@ class AI(private var player: Player, private var depth: Int) extends Solver {
     var state = new State(player, b, null)
     createGameTree(state, depth)
     minimax(state)
+    println(state.getValue)
     var children = state.getChildren
     val n: Integer = 0
     for(child <- children)
-      if(n<=child.getValue)
+      if(n<=child.getValue){
+        println("printing value" + child.getValue + " and printing move " + child.getLastMove)
         moves.append(child.getLastMove)
+      }
     moves.toArray
   }
 
   def minimax(s: State): Unit = {
 
+    def helper2(recState: State): Int = {
+      val children = recState.getChildren
+      if(children.length == 0){
+        recState.setValue(evaluateBoard(recState.getBoard))
+        println(recState.getValue)
+        recState.getValue
+      }
+      else {
+
+      }
+    }
+
+
+
 //    def helper(s1: State): Int = {
-//      if(s1.getChildren == 0){
+//      if(s1.getChildren.length == 0){
 //        s1.setValue(evaluateBoard(s1.getBoard))
-//        s.getValue
+//        s1.getValue
 //      }else{
 //        val children = s1.getChildren
 //        val listOfValues = new ListBuffer[Integer]
 //        for(child <- children)
 //          listOfValues.append(helper(child))
-//        if(s1.player == this.player)
+//        if(s1.player == this.player){
 //          listOfValues.max
-//        else
+//        }
+//        else {
 //          listOfValues.min
+//        }
 //      }
 //    }
 //    s.setValue(helper(s))

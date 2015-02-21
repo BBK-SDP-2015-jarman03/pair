@@ -3,7 +3,7 @@ object Game extends App {
 
   private val SLEEP_INTERVAL = 10
 
-  val p1 = new Dummy(RED)
+  val p1= new AI(RED, 2);
   val p2 = new Dummy(YELLOW)
   val b = new Board();
   b.makeMove(new Move(RED, 4))
@@ -13,16 +13,26 @@ object Game extends App {
   b.makeMove(new Move(RED, 4))
   b.makeMove(new Move(YELLOW, 4))
 
-  var posMovesRed = b.getPossibleMoves(RED)
-  var posMovesYellow = b.getPossibleMoves(YELLOW)
+  var state = new State(RED, new Board(b), new Move(YELLOW, 4))
+  AI.createGameTree(state, 3)
+  AI.minimax(p1, state)
+  println("Completed")
+  //var children = state.getChildren
+  //println(children.length)
+  println(state)
+//  for(child <- children)
+//    println(child)
 
-  for(rMove <- posMovesRed){
-    println(s"${rMove.player} : ${rMove.column}")
-  }
-
-  for(yMove <- posMovesYellow){
-    println(s"${yMove.player} : ${yMove.column}")
-  }
+//  var posMovesRed = b.getPossibleMoves(RED)
+//  var posMovesYellow = b.getPossibleMoves(YELLOW)
+//
+//  for(rMove <- posMovesRed){
+//    println(s"${rMove.player} : ${rMove.column}")
+//  }
+//
+//  for(yMove <- posMovesYellow){
+//    println(s"${yMove.player} : ${yMove.column}")
+//  }
 
   //val game = new Game(p1, p2, b, true)
   //game.runGame()
